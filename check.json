@@ -1,0 +1,12 @@
+{
+  "Services": [
+    {
+      "Name": "User API",
+      "Url": "https://jsonplaceholder.typicode.com/users"
+    },
+    {
+      "Name": "Fail API",
+      "Url": "https://jsonplaceholder.typicode.com/wrong"
+    }
+  ]
+}

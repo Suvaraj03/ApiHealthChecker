@@ -8,6 +8,7 @@
         public int StatusCode { get; set; }
         public long ResponseTime { get; set; }
         public string Message { get; set; } = "";
+        public string? ResponseBody { get; set; }
 
     }
 }

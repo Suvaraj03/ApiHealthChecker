@@ -17,13 +17,16 @@ namespace ApiHealthChecker.Services
             result.Url = url;
             try
             {
+                using var request = new HttpRequestMessage(HttpMethod.Get, result.Url);
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                var response = await _httpClient.GetAsync(url);
+                var response = await _httpClient.SendAsync(request);
                 stopwatch.Stop();
+                var body = await response.Content.ReadAsStringAsync();
                 result.ResponseTime = stopwatch.ElapsedMilliseconds;
                 result.StatusCode = (int)response.StatusCode;
                 result.IsHealthy = response.IsSuccessStatusCode;
-                result.Message = response.IsSuccessStatusCode ? "API is working" : $"API returned error {response.StatusCode}";
+                result.ResponseBody = body.Length > 300 ? body.Substring(0, 300) + "..." : body;
+                result.Message = response.IsSuccessStatusCode ? "OK" : $"HTTP {response.StatusCode}";
             }
             catch (Exception ex)
             {
