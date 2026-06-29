@@ -22,7 +22,7 @@ namespace ApiHealthChecker.Services
                 result.ResponseTime = stopwatch.ElapsedMilliseconds;
                 result.StatusCode = (int)response.StatusCode;
                 result.IsHealthy = response.IsSuccessStatusCode;
-                result.Message = response.IsSuccessStatusCode ? "API is working" : "API returned error {response.StatusCode}";
+                result.Message = response.IsSuccessStatusCode ? "API is working" : $"API returned error {response.StatusCode}";
             }
             catch (Exception ex)
             {
