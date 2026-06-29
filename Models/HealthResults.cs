@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApiHealthChecker.Models
+﻿namespace ApiHealthChecker.Models
 {
     public class HealthResults
     {

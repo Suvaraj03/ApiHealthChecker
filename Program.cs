@@ -1,9 +1,8 @@
 ﻿using ApiHealthChecker.Services;
 using ApiHealthChecker.Utils;
 using Spectre.Console;
-//Console.Write("Enter API URL: ");
-//string? url = Console.ReadLine();
-if(args.Length == 0)
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+if (args.Length == 0)
 {
     AnsiConsole.MarkupLine("[red]Usage: health-check <url>[/]");
     return;

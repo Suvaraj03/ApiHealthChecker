@@ -6,11 +6,25 @@ namespace ApiHealthChecker.Utils
     {
         public static void Success(string message)
         {
-            AnsiConsole.MarkupLine("[green]\u2714 Api Healthy[/]");//unicode refers to ✔
+            AnsiConsole.MarkupLine(
+                $"[green]\u2714 {message}[/]"
+            );
         }
-        public static void Failure(string message) 
+
+
+        public static void Failure(string message)
         {
-            AnsiConsole.MarkupLine("[red]\u2718 Api Failed"); //unicode refers to ✘
+            AnsiConsole.MarkupLine(
+                $"[red]\u2718 {message}[/]"
+            );
+        }
+
+
+        public static void Warning(string message)
+        {
+            AnsiConsole.MarkupLine(
+                $"[yellow]\u26A0 {message}[/]"
+            );
         }
     }
 }

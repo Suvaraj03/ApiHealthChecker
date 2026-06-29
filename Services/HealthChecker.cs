@@ -1,9 +1,5 @@
 ﻿using ApiHealthChecker.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Text;
 
 namespace ApiHealthChecker.Services
 {
@@ -24,13 +20,13 @@ namespace ApiHealthChecker.Services
                 var response = await _httpClient.GetAsync(url);
                 stopwatch.Stop();
                 result.ResponseTime = stopwatch.ElapsedMilliseconds;
-                result.StatusCode =(int)response.StatusCode;
+                result.StatusCode = (int)response.StatusCode;
                 result.IsHealthy = response.IsSuccessStatusCode;
-                result.Message = response.IsSuccessStatusCode? "API is working": "API returned error";
+                result.Message = response.IsSuccessStatusCode ? "API is working" : "API returned error {response.StatusCode}";
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
-                result.IsHealthy =false;
+                result.IsHealthy = false;
                 result.Message = ex.Message;
             }
             return result;
