@@ -10,9 +10,10 @@ namespace ApiHealthChecker.Services
         {
             _httpClient = new HttpClient();
         }
-        public async Task<HealthResults> GetHealthResultsAsync(string url)
+        public async Task<HealthResults> GetHealthResultsAsync(string url,string name)
         {
             var result = new HealthResults();
+            result.Name = name;
             result.Url = url;
             try
             {
