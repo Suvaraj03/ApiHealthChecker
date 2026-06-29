@@ -2,6 +2,7 @@
 {
     public class HealthResults
     {
+        public string Name { get; set; } = "";
         public string Url { get; set; } = "";
         public bool IsHealthy { get; set; }
         public int StatusCode { get; set; }
