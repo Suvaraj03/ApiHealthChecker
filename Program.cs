@@ -48,7 +48,6 @@ if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.Ur
     return;
 
 }
-
 //
 // Multiple URL Check
 //
@@ -56,57 +55,121 @@ if (args.Length >= 2 &&
     (args[0] == "--config" || args[0] == "-c"))
 {
     string configPath = args[1];
-    if (!File.Exists(configPath))
+
+    try
     {
-        ConsoleHelper.Failure(
-            $"Config file not found: {configPath}"
-        );
-        return;
-    }
-    var json = await File.ReadAllTextAsync(configPath);
-    var config =JsonSerializer.Deserialize<ApiConfig>(json);
-    if (config == null)
-    {
-        ConsoleHelper.Failure(
-            "Invalid config file"
-        );
-        return;
-    }
-    AnsiConsole.MarkupLine(
-        "[yellow]Checking Services...[/]"
-    );
-    int healthy = 0;
-    int failed = 0;
-    foreach (var service in config.Services)
-    {
-        var result =
-            await checker.GetHealthResultsAsync(
-                service.Url,
-                service.Name
-            );
-        if (result.IsHealthy)
-        {
-            ConsoleHelper.Success(
-                $"{result.Name} - {result.StatusCode} ({result.ResponseTime}ms)"
-            );
-            healthy++;
-        }
-        else
+        if (!File.Exists(configPath))
         {
             ConsoleHelper.Failure(
-                $"{result.Name} - {result.Message}"
+                $"Config file not found: {configPath}"
             );
+            return;
+        }
+        var json = await File.ReadAllTextAsync(configPath);
+        var config = JsonSerializer.Deserialize<ApiConfig>(
+            json,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
-            failed++;
+        if (config == null)
+        {
+            ConsoleHelper.Failure("Invalid config file");
+            return;
         }
 
-    }
-    Console.WriteLine();
-    Console.WriteLine("Summary");
-    Console.WriteLine($"Total : {config.Services.Count}");
-    Console.WriteLine($"Healthy : {healthy}");
-    Console.WriteLine($"Failed : {failed}");
+        if (config.Services == null || config.Services.Count == 0)
+        {
+            ConsoleHelper.Failure("No services found in config file");
+            return;
+        }
 
-    return;
+        AnsiConsole.MarkupLine("[yellow]Checking Services...[/]");
+
+        int healthy = 0;
+        int failed = 0;
+
+        foreach (var service in config.Services)
+        {
+            try
+            {
+                var result =
+                    await checker.GetHealthResultsAsync(
+                        service.Url,
+                        service.Name
+                    );
+                if (result.IsHealthy)
+                    healthy++;
+                else
+                    failed++;
+
+                if (!isVerbose)
+                {
+                    if (result.IsHealthy)
+                    {
+                        ConsoleHelper.Success(
+                            $"{result.Name} - {result.StatusCode} ({result.ResponseTime}ms)"
+                        );
+                    }
+                    else
+                    {
+                        ConsoleHelper.Failure(
+                            $"{result.Name} - {result.Message}"
+                        );
+                        
+                    }
+                }
+                else
+                {
+                    AnsiConsole.WriteLine("\n------------------------");
+                    AnsiConsole.WriteLine($"SERVICE: {result.Name}");
+                    AnsiConsole.WriteLine("--------------------------");
+
+                    AnsiConsole.WriteLine($"URL: {result.Url}");
+                    AnsiConsole.WriteLine("Method: GET");
+                    AnsiConsole.WriteLine($"Time: {result.ResponseTime}ms");
+                    AnsiConsole.WriteLine($"Status: {result.StatusCode}");
+                    AnsiConsole.WriteLine($"Success: {result.IsHealthy}");
+                }
+            }
+            catch (Exception ex)
+            {
+                failed++;
+
+                ConsoleHelper.Failure(
+                    $"Error checking {service.Name}: {ex.Message}"
+                );
+
+                //if (isVerbose)
+                //{
+                //    AnsiConsole.WriteLine(ex.ToString());
+                //}
+            }
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Summary");
+        Console.WriteLine($"Total : {config.Services.Count}");
+        Console.WriteLine($"Healthy : {healthy}");
+        Console.WriteLine($"Failed : {failed}");
+
+        return;
+    }
+    catch (JsonException jsonEx)
+    {
+        ConsoleHelper.Failure($"Invalid JSON format: {jsonEx.Message}");
+        return;
+    }
+    catch (IOException ioEx)
+    {
+        ConsoleHelper.Failure($"File read error: {ioEx.Message}");
+        return;
+    }
+    catch (Exception ex)
+    {
+        ConsoleHelper.Failure($"Unexpected error: {ex.Message}");
+        return;
+    }
 }
 Console.WriteLine("Invalid URL or config file");
