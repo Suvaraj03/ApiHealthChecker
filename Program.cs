@@ -12,13 +12,27 @@ if (args.Length == 0)
     return;
 }
 string input = args[0];
+bool isVerbose = args.Contains("--verbose");
 var checker = new HealthChecker();
 //
 // Single URL Check
 //
-if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) //Its supports both http and https.
 {
     var result = await checker.GetHealthResultsAsync(input, "API");
+    if (isVerbose)
+    {
+        AnsiConsole.MarkupLine("[bold yellow]--- VERBOSE MODE ---[/]");
+        Console.WriteLine($"URL           : {result.Url}");
+        Console.WriteLine($"Name          : {result.Name}");
+        Console.WriteLine($"Status Code   : {result.StatusCode}");
+        Console.WriteLine($"Response Time : {result.ResponseTime} ms");
+        Console.WriteLine($"Success       : {result.IsHealthy}");
+        Console.WriteLine($"Message       : {result.Message}");
+        Console.WriteLine($"Response Body : {result.ResponseBody}");
+        Console.WriteLine("----------------------");
+        return;
+    }
     if (result.IsHealthy)
     {
         ConsoleHelper.Success(
