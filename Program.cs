@@ -14,12 +14,31 @@ if (args.Length == 0)
 string input = args[0];
 bool isVerbose = args.Contains("--verbose");
 var checker = new HealthChecker();
+var reportService = new ReportService();
+bool saveReport = args.Contains("--save");
 //
 // Single URL Check
 //
 if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) //Its supports both http and https.
 {
     var result = await checker.GetHealthResultsAsync(input, "API");
+    if (saveReport)
+    {
+        var report = new HealthReport
+        {
+            GeneratedAt = DateTime.Now,
+            Total = 1,
+            Healthy = result.IsHealthy ? 1 : 0,
+            Failed = result.IsHealthy ? 0 : 1,
+            Results = new List<HealthResults>
+            {
+                result
+            }
+        };
+        await reportService.SaveAsync(report,result.Name);
+        Console.WriteLine("Report saved : health-report.json");
+
+    }
     if (isVerbose)
     {
         AnsiConsole.MarkupLine("[bold yellow]--- VERBOSE MODE ---[/]");
