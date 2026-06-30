@@ -12,6 +12,7 @@ if (args.Length == 0)
     Console.WriteLine("health-check <url> --verbose");
     Console.WriteLine("health-check -c <config.json> --verbose");
     Console.WriteLine("health-check <url> --save"); //report save for single url checking
+    Console.WriteLine("health-check -c <config.json> --save"); //reports generates for multiple url.
     return;
 }
 string input = args[0];
@@ -38,7 +39,7 @@ if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.Ur
                 result
             }
         };
-        await reportService.SaveAsync(report,result.Url);
+        await reportService.SaveAsync(result);
        
 
     }
@@ -112,6 +113,9 @@ if (args.Length >= 2 &&
         int healthy = 0;
         int failed = 0;
 
+        string environment = Path.GetFileNameWithoutExtension(configPath);
+
+
         foreach (var service in config.Services)
         {
             try
@@ -125,7 +129,10 @@ if (args.Length >= 2 &&
                     healthy++;
                 else
                     failed++;
-
+                if (saveReport)
+                {
+                    await reportService.SaveAsync(result, environment);
+                }
                 if (!isVerbose)
                 {
                     if (result.IsHealthy)
