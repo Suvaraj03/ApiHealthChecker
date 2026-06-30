@@ -6,7 +6,7 @@
         public int Total { get; set; }
         public int Healthy { get; set; }
         public int Failed { get; set; }
-        public List<HealthResults> Results { get; set; }
+        public List<HealthResults>? Results { get; set; }
 
     }
 }
