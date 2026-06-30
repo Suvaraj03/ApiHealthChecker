@@ -9,6 +9,9 @@ if (args.Length == 0)
     AnsiConsole.MarkupLine("[red]Usage:[/]");
     Console.WriteLine("health-check <url>");
     Console.WriteLine("health-check -c <config.json>");
+    Console.WriteLine("health-check <url> --verbose");
+    Console.WriteLine("health-check -c <config.json> --verbose");
+    Console.WriteLine("health-check <url> --save"); //report save for single url checking
     return;
 }
 string input = args[0];
