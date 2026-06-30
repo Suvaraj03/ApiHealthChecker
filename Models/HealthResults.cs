@@ -9,6 +9,7 @@
         public long ResponseTime { get; set; }
         public string Message { get; set; } = "";
         public string? ResponseBody { get; set; }
+        public DateTime CheckedAt { get; set; }
 
     }
 }
