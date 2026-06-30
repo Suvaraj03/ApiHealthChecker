@@ -35,8 +35,8 @@ if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.Ur
                 result
             }
         };
-        await reportService.SaveAsync(report,result.Name);
-        Console.WriteLine("Report saved : health-report.json");
+        await reportService.SaveAsync(report,result.Url);
+       
 
     }
     if (isVerbose)
