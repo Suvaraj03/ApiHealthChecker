@@ -16,10 +16,10 @@ if (args.Length == 0)
     return;
 }
 string input = args[0];
-bool isVerbose = args.Contains("--verbose");
+bool isVerbose = args.Contains("--verbose") || args.Contains("-v");
 var checker = new HealthChecker();
 var reportService = new ReportService();
-bool saveReport = args.Contains("--save");
+bool saveReport = args.Contains("--save") || args.Contains("-s");
 //
 // Single URL Check
 //
