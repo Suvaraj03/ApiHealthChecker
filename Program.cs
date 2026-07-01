@@ -6,6 +6,7 @@ using System.Text.Json;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 if (args.Length == 0)
 {
+    //This shows the usage of the application when no arguments are provided.
     AnsiConsole.MarkupLine("[red]Usage:[/]");
     Console.WriteLine("health-check <url>");
     Console.WriteLine("health-check -c <config.json>");
