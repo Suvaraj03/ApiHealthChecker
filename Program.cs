@@ -8,9 +8,9 @@ if (args.Length == 0)
 {
     //This shows the usage of the application when no arguments are provided.
     AnsiConsole.MarkupLine("[red]Usage:[/]");
-    Console.WriteLine("health-check <url>"); //This is for single url checking.
-    Console.WriteLine("health-check -c <config.json>");//This is for multiple url checking.
-    Console.WriteLine("health-check <url> --verbose");//This is for single url checking with verbose output.
+    Console.WriteLine("health-check <url>"); 
+    Console.WriteLine("health-check -c <config.json>");
+    Console.WriteLine("health-check <url> --verbose");
     Console.WriteLine("health-check -c <config.json> --verbose");
     Console.WriteLine("health-check <url> --save"); //report save for single url checking
     Console.WriteLine("health-check -c <config.json> --save"); //reports generates for multiple url.
