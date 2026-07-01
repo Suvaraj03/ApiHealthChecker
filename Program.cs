@@ -39,8 +39,6 @@ if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.Ur
                 result
             }
         };
-
-
         await reportService.SaveAsync(result);
        
 
