@@ -6,14 +6,14 @@ using System.Text.Json;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 if (args.Length == 0)
 {
-    //This shows the usage of the application when no arguments are provided.
-    AnsiConsole.MarkupLine("[red]Usage:[/]");//This shows the usage of the application when no arguments are provided.
-    Console.WriteLine("health-check <url>"); //This shows the usage of the application when no arguments are provided.
-    Console.WriteLine("health-check -c <config.json>");//This shows the usage of the application when no arguments are provided.
+    
+    AnsiConsole.MarkupLine("[red]Usage:[/]");
+    Console.WriteLine("health-check <url>"); 
+    Console.WriteLine("health-check -c <config.json>");
     Console.WriteLine("health-check <url> --verbose");
     Console.WriteLine("health-check -c <config.json> --verbose");
-    Console.WriteLine("health-check <url> --save"); //report save for single url checking
-    Console.WriteLine("health-check -c <config.json> --save"); //reports generates for multiple url.
+    Console.WriteLine("health-check <url> --save"); 
+    Console.WriteLine("health-check -c <config.json> --save");
     return;
 }
 string input = args[0];
