@@ -24,7 +24,7 @@ bool saveReport = args.Contains("--save") || args.Contains("-s");
 //
 // Single URL Check
 //
-if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) //Its supports both http and https.
+if (Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) 
 {
     var result = await checker.GetHealthResultsAsync(input, "API");
     if (saveReport)
@@ -170,11 +170,6 @@ if (args.Length >= 2 &&
                 ConsoleHelper.Failure(
                     $"Error checking {service.Name}: {ex.Message}"
                 );
-
-                //if (isVerbose)
-                //{
-                //    AnsiConsole.WriteLine(ex.ToString());
-                //}
             }
         }
 
